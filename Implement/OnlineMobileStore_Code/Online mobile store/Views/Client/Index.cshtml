@@ -1,0 +1,193 @@
+﻿@model List<Product>
+@{
+    Layout = "homelayout";
+    var headPhone = Model.Where(a => a.type == "headphone");
+    var iphone = Model.Where(a => a.type == "iphone");
+    var smartwatch = Model.Where(a => a.type == "smartwatch");
+
+}
+
+<style>
+    .catigorey {
+        display: flex;
+        justify-content: center;
+        background-color: #e7e7e7; /* Changed opacity to make it more opaque */
+        padding: 20px 0; /* Added padding for better spacing */
+    }
+
+        .catigorey li {
+            list-style-type: none;
+        }
+
+        .catigorey a {
+            text-decoration: none;
+            color: black;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .catigorey a:hover {
+                cursor: pointer;
+                color: white;
+                background-color: var(--carribean-green);
+            }
+
+            .catigorey a.active {
+                transition: background-color 0.3s ease;
+                background-color: var(--carribean-green);
+                color: white;
+            }
+
+</style>
+
+<header class="section__container header__container">
+    <div class="header__image">
+        <img src="~/Images/homeimages/watches.png" alt="header" />
+    </div>
+    <div class="header__content">
+        <h2>Where Innovation Meets Style, Sound, and Mobility</h2>
+        <h1>Options for Every Outlook</h1>
+        <p>
+            Discover the perfect companion for every moment with our 'Tech for Your Current Mood' section. Whether you're on the go,
+            in contemplation, or anywhere in between, explore curated features and functions tailored to match your mood.
+        </p>
+        @*  <div class="header__btns">
+        <a href="#">
+        <img src="assets/google-play.jpg" alt="google-play" />
+        </a>
+        <a href="#">
+        <img src="assets/app-store.jpg" alt="app-store" />
+        </a>
+        </div> *@
+    </div>
+
+    <div class="header__image">
+        <img src="~/Images/homeimages/watches.png" alt="header" />
+    </div>
+@*     <div class="header__content">
+        <h2>Where Innovation Meets Style, Sound, and Mobility</h2>
+        <h1>Options for Every Outlook</h1>
+        <p>
+            Discover the perfect companion for every moment with our 'Tech for Your Current Mood' section. Whether you're on the go,
+            in contemplation, or anywhere in between, explore curated features and functions tailored to match your mood.
+        </p>
+    </div> *@
+
+</header>
+<div style="background-color:white">
+
+
+    <div class="products">
+        <div class="container">
+            <ul class="catigorey">
+                <li><a onclick="showCategory('headphone', this)">headphone</a></li>
+                <li><a onclick="showCategory('iphone', this)">iphone</a></li>
+                <li><a onclick="showCategory('smartwatch', this)">smartwatch</a></li>
+            </ul>
+
+
+            <div class="product-items">
+                @foreach (var i in Model)
+                {
+                    <!-- single product -->
+                    <div class="product" data-category="@i.type">
+                        <div class="product-content">
+                            <div class="product-img">
+                                <img src="~/Images/products/@i.image" alt="product image">
+                            </div>
+
+                        </div>
+
+                        <div class="product-info">
+                            <div class="product-info-top">
+                                <h2 class="sm-title">lifestyle</h2>
+                                <div class="rating">
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="fas fa-star"></i></span>
+                                    <span><i class="far fa-star"></i></span>
+                                </div>
+                            </div>
+                            <a href="#" class="product-name">mens shoes DN 23XX, new product</a>
+
+                            <p>$ @i.price</p>
+                            <div>
+                                <form id="addToCartForm-@i.prod_id" method="post">
+                                    <button type="submit" class="cart addToCartBtn" data-product-id="@i.prod_id">
+                                        Add To Cart
+                                        <span><i class="fas fa-shopping-cart"></i></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+@section scripts
+{
+    <script>
+        function showCategory(category, element) {
+            var allLinks = document.querySelectorAll('.catigorey a');
+            allLinks.forEach(link => link.classList.remove('active'));
+            element.classList.add('active');
+
+            var allProducts = document.querySelectorAll('.product');
+            allProducts.forEach(product => product.style.display = 'none');
+
+            if (category === 'headphone') {
+                var headphoneProducts = document.querySelectorAll('.product[data-category="headphone"]');
+                headphoneProducts.forEach(product => product.style.display = 'block');
+            } else if (category === 'iphone') {
+                var iphoneProducts = document.querySelectorAll('.product[data-category="iphone"]');
+                iphoneProducts.forEach(product => product.style.display = 'block');
+            } else if (category === 'smartwatch') {
+                var smartwatchProducts = document.querySelectorAll('.product[data-category="smartwatch"]');
+                smartwatchProducts.forEach(product => product.style.display = 'block');
+            }
+        }
+        $(document).ready(function () {
+
+            $('.newbadge').text('@ViewBag.cartorders');
+
+
+            $('.addToCartBtn').click(function (e) {
+                e.preventDefault();
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/Client/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (data) {
+                        debugger;
+                        if (data.loginRequired) {
+                            window.location.href = "/Account/Index";
+                        } else {
+                            $('.newbadge').text(data.cartorders);
+                        }
+                    },
+                    error: function () {
+                        console.log('Error occurred while adding to cart.');
+                    }
+                });
+            });
+
+        });
+    </script>
+}

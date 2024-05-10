@@ -1,0 +1,54 @@
+﻿@{
+    Layout= "homelayout";
+}
+@section scripts
+{
+    <script>
+        function showCategory(category, element) {
+            var allLinks = document.querySelectorAll('.catigorey a');
+            allLinks.forEach(link => link.classList.remove('active'));
+            element.classList.add('active');
+
+            var allProducts = document.querySelectorAll('.product');
+            allProducts.forEach(product => product.style.display = 'none');
+
+            if (category === 'headphone') {
+                var headphoneProducts = document.querySelectorAll('.product[data-category="headphone"]');
+                headphoneProducts.forEach(product => product.style.display = 'block');
+            } else if (category === 'iphone') {
+                var iphoneProducts = document.querySelectorAll('.product[data-category="iphone"]');
+                iphoneProducts.forEach(product => product.style.display = 'block');
+            } else if (category === 'smartwatch') {
+                var smartwatchProducts = document.querySelectorAll('.product[data-category="smartwatch"]');
+                smartwatchProducts.forEach(product => product.style.display = 'block');
+            }
+        }
+        $(document).ready(function () {
+
+            $('.newbadge').text('@ViewBag.cartorders');
+
+
+            $('.addToCartBtn').click(function (e) {
+                e.preventDefault();
+                var productId = $(this).data('product-id');
+                $.ajax({
+                    url: '/Client/AddToCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (data) {
+                        debugger;
+                        if (data.loginRequired) {
+                            window.location.href = "/Account/Index";
+                        } else {
+                            $('.newbadge').text(data.cartorders);
+                        }
+                    },
+                    error: function () {
+                        console.log('Error occurred while adding to cart.');
+                    }
+                });
+            });
+
+        });
+    </script>
+}

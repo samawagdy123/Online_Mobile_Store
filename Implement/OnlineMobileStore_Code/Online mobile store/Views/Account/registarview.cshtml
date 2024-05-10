@@ -1,0 +1,71 @@
+﻿@model UserLoginView;
+<form id="signup-form" class="sign-up-form" method="post">
+    <h2 class="title">Sign up</h2>
+    <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input placeholder="Username" asp-for="user.UserName" />
+    </div>
+    <span asp-validation-for="user.UserName" style="color:red"></span>
+    <div class="input-field">
+        <i class="fas fa-envelope"></i>
+        <input asp-for="user.Email" placeholder="Email" />
+    </div>
+    <span asp-validation-for="user.Email" style="color:red"></span>
+    <div class="input-field">
+        <i class="fas fa-lock"></i>
+        <input asp-for="user.Password" placeholder="Password" />
+    </div>
+    <span asp-validation-for="user.Password" style="color:red"></span>
+    <div style="display: flex;flex-direction: row;justify-content: space-between;width: 290px;">
+        <input type="radio" value="female" asp-for="user.Gender" />
+        <label style="margin-left: -63px">Female</label>
+        <input type="radio" value="male" style="margin-right: -60px;" asp-for="user.Gender" />
+        <label style=" margin-right: 30px;">Male</label>
+    </div>
+    <div style="display: flex;flex-direction: row;justify-content: space-between;width: 290px;">
+        <input type="radio" value="client" asp-for="user.Role" />
+        <label style="margin-left: -59px;">Client</label>
+        <input type="radio" value="supplier" style="margin-right: -60px;" asp-for="user.Role" />
+        <label>Supplier</label>
+    </div>
+
+    <input type="button" class="btn" value="Sign up" id="signupp-btn" />
+
+
+    <div class="alert alert-danger" id="error" style="color:red"></div>
+    
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#signupp-btn').click(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var formData = $('#signup-form').serialize(); // Serialize form data
+
+            // Send form data via AJAX
+            $.ajax({
+                url: '/account/registarview', // Replace this with your action URL
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    window.location.href = "/account/Index";
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    if (xhr.status === 400) {
+                        console.log(xhr.responseJSON)
+                        // Display error message from server
+                        $('#error').text(xhr.responseJSON.message)
+                    }
+                }
+            });
+        });
+    });
+    // Function to redirect to the login action with user data
+    
+
+</script>
+
