@@ -1,0 +1,129 @@
+﻿@using System.Security.Claims;
+@using Online_mobile_store.Models
+@{
+    int userId = -1;
+    string name = "";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        name = User.FindFirst(ClaimTypes.Role).Value;
+    }
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/footercss.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/homelayout.css" />
+    <link rel="stylesheet" href="~/css/stylecard.css" />
+    <title>Web Design Mastery | Play</title>
+</head>
+<body>
+    <nav>
+        <div class="nav__header">
+            <div class="nav__logo">
+                <a href="#">Sm<span><i class="ri-play-fill"></i></span>rtTech</a>
+            </div>
+            <div class="nav__menu__btn" id="menu-btn">
+                <span><i class="ri-menu-line"></i></span>
+            </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Contact</a></li>
+            <li>
+                <a href="#">
+                   @*  <i class="fas fa-shopping-cart"></i> *@
+                    <span class="newbadge"
+                          style="background-color: #f54725;
+                            padding: 4px;
+                            font-size: 0.7rem;
+                            color: white;
+                            border-radius: 12px;
+                            position: absolute;
+                            margin-top: -14px;
+                            margin-left: 3px;
+                        ">
+                        0
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="client" asp-action="checkout">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span style="background-color: #f54725;
+                            padding: 4px;
+                            font-size: 0.7rem;
+                            color: white;
+                            border-radius: 12px;
+                            position: absolute;
+                            margin-top: -14px;
+                            margin-left: 3px;
+                        ">
+
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+        <div class="nav__btns">
+            @if (userId == -1)
+            {
+                <a asp-action="index" asp-controller="account" class="btn" style="color:#eff4f6;">Sign in</a>
+
+            }
+            else
+            {
+                <a asp-action="Logout" asp-controller="account" class="btn" style="color:#eff4f6;">Log Out</a>
+            }
+
+        </div>
+    </nav>
+    <script>
+    
+    </script>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <div>
+        @RenderBody();
+    </div>
+    <footer>
+        <div class="footerContainer">
+            <div class="socialIcons">
+                <a href=""><i class="fa-brands fa-facebook"></i></a>
+                <a href=""><i class="fa-brands fa-instagram"></i></a>
+                <a href=""><i class="fa-brands fa-twitter"></i></a>
+                <a href=""><i class="fa-brands fa-google-plus"></i></a>
+                <a href=""><i class="fa-brands fa-youtube"></i></a>
+            </div>
+            <div class="footerNav">
+                <ul style="color: #475569">
+                    <li><a href="" style="color: #475569">Home</a></li>
+                    <li><a href="" style="color: #475569">News</a></li>
+                    <li><a href="" style="color: #475569">About</a></li>
+                    <li><a href="" style="color: #475569">Contact Us</a></li>
+                    <li><a href="" style="color: #475569">our Team</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/homelayout.js"></script>
+    @RenderSection("scripts", required: false);
+
+
+
+
+
+</body>
+</html>

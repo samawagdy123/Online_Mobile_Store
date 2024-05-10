@@ -1,0 +1,111 @@
+﻿@model IEnumerable<Users_Product> ;
+@{
+    Layout = "homelayout";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="~/css/checkoutPage.css">
+    <style>
+
+
+        .full-width {
+            width: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class='container'>
+        <div class='window'>
+            <div class='order-info'>
+                <div class='order-info-content' style=" overflow-y: scroll;    min-width: 87%;
+    padding: 0px 15px;">
+                    <h2>Order Summary</h2>
+                    <div class='line'></div>
+                    <table class='order-table'>
+
+                        <tbody>
+
+
+                            @if (Model.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="2">
+                                        <div>Your Cart Is Empty</div>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+
+                                @foreach (var userProduct in Model)
+                                {
+                                    var product = userProduct.prod;
+                                    if (product != null)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="@Url.Content("~/Images/products/" + product.image)" class="full-width" alt="product image">
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span class="thin">@product.prod_name</span><br>
+                                                    <span class="thin small">Quantity: @userProduct.selected_quantity</span><br>
+                                                    <span>$@(product.price * userProduct.selected_quantity)</span>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="line"></div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                    <div class='total'>
+                        <span style='float:left;'>
+                            <div class='thin dense'>VAT 19%</div>
+                            <div class='thin dense'>Delivery</div>
+                            TOTAL
+                        </span>
+                        <span style='float:right; text-align:right;'>
+                            <div class='thin dense'>@(@ViewBag.TotalPrice +(.19m * @ViewBag.TotalPrice))</div>
+                            <div class='thin dense'>$4.95</div>
+                            @(@ViewBag.TotalPrice +(.19m * @ViewBag.TotalPrice) + 4.95m)
+                        </span>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+
+</body>
+</html>
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+
+            $('.newbadge').text('@ViewBag.cartorders');
+
+        });
+    </script>
+}

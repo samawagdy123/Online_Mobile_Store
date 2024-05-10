@@ -1,0 +1,40 @@
+﻿@model Product
+<div class="form-group">
+    <label asp-for="prod_name">Name</label>
+    <input asp-for="prod_name" class="form-control custom-input" value="@Model?.prod_name" />
+    <span asp-validation-for="prod_name" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="image">Image : </label>
+    <input type="file" class="custom-input form-control" name="Image"  />
+    <span asp-validation-for="image" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="price">Price</label>
+    <input asp-for="price" class="form-control custom-input" value="@Model?.price" />
+    <span asp-validation-for="price" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="quantity">Quantity</label>
+    <input asp-for="quantity" class="form-control custom-input" value="@Model?.quantity" />
+    <span asp-validation-for="quantity" class="text-danger"></span>
+</div>
+
+
+
+<div class="form-group">
+    <label asp-for="type">Type</label>
+    @*     <input asp-for="type" class="form-control custom-input" value="@Model?.type" /> *@
+<select asp-for="type">
+        <option value="iphone">iphone</option>
+        <option value="headphone">headphone</option>
+        <option value="smartwatch">smartwatch</option>
+</select>
+    <span asp-validation-for="type" class="text-danger"></span>
+</div>
+
+<button type="submit" class="btn btn-primary custom-btn">Submit</button>
+
