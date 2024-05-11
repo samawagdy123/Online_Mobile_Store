@@ -58,6 +58,7 @@ namespace OnlineMobileAPP
                 case "admin":
                     Admin admin = new Admin();
                     admin.Show();
+                    this.Hide();
                     break;
                 case "client":
                     // Redirect to client page
@@ -77,7 +78,7 @@ namespace OnlineMobileAPP
                     }
                     Supplier supplierForm = new Supplier(userID);
                     supplierForm.Show();
-              
+                    this.Hide();
                     break;
                 default:
                     MessageBox.Show(output, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -89,7 +90,8 @@ namespace OnlineMobileAPP
         {
             SignUp join = new SignUp();
             join.Show();
-           
+            // Optionally, you can hide or close the current form
+            this.Hide();
         }
     }
 }
